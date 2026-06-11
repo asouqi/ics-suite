@@ -52,6 +52,7 @@ export type ICSDateTime = {
     year: number
     month: number
     day: number
+    hour: number
     minute: number
     second: number
     /** True when value is expressed in UTC, indicated by a trailing Z */
