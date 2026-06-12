@@ -1,6 +1,6 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import importPlugin from 'eslint-plugin-import'
+import importPlugin from 'eslint-plugin-import-x'
 import unusedImports from 'eslint-plugin-unused-imports'
 
 export default tseslint.config(
@@ -13,9 +13,8 @@ export default tseslint.config(
         },
         rules: {
             '@typescript-eslint/no-explicit-any': 'error',
-            '@typescript-eslint/explicit-function-return-type': 'warn',
+            '@typescript-eslint/explicit-function-return-type': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
-
             'unused-imports/no-unused-imports': 'error',
             'unused-imports/no-unused-vars': [
                 'warn',
@@ -41,7 +40,7 @@ export default tseslint.config(
             'import/newline-after-import': 'error',
         },
         settings: {
-            'import/resolver': {
+            'import-x/resolver': {
                 typescript: true,
                 node: true,
             },

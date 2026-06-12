@@ -1,4 +1,3 @@
-import type { IComponentPropertyAssigner, IPropertyAssignerRegistry } from './types'
 import {
   AlarmAssigner,
   CalendarAssigner,
@@ -7,6 +6,7 @@ import {
   TimezoneObservance,
   TodoAssigner,
 } from './component'
+import type { IComponentPropertyAssigner, IPropertyAssignerRegistry } from './types'
 
 export class PropertyAssignerRegistry implements IPropertyAssignerRegistry {
   private assigner = new Map<string, IComponentPropertyAssigner>()

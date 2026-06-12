@@ -58,7 +58,7 @@ export function parseDateOrDateTime(
   value: string,
   params: Record<string, string>,
 ): ICSDateOrDateTime {
-  if (params.VALUE === 'DATE' || !value.endsWith('Z')) {
+  if (params.VALUE === 'DATE' || !value.includes('T')) {
     return parseDate(value)
   }
   return parseDateTime(value, params)

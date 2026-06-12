@@ -1,7 +1,9 @@
-import { AssemblyIssue, IComponentPropertyAssigner, IPropertyHandler } from './types'
-import { PropertyHandlers as P } from './property'
-import { parseAttendee, parseDuration, parseOrganizer, parseRRule } from './util'
 import { ICSAlarm, ICSCalendar, ICSEvent, ICSJournal, ICSTimezoneObservance, ICSTodo } from '../../types'
+
+import { PropertyHandlers as P } from './property'
+import { AssemblyIssue, IComponentPropertyAssigner, IPropertyHandler } from './types'
+import { parseAttendee, parseDuration, parseOrganizer, parseRRule } from './util'
+
 
 abstract class BaseComponentAssigner<T> implements IComponentPropertyAssigner {
   abstract readonly componentType: string

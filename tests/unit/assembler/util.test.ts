@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+
 import { parseAttendee, parseDate, parseDateOrDateTime, parseDateTime, parseDuration, parseOrganizer, parseRRule } from '../../../src/parser/assembler'
 
 describe('parseDate', () => {

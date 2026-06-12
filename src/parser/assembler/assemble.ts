@@ -1,4 +1,3 @@
-import { PropertyToken, Token } from '../tokenizer/types'
 import {
   ICSAlarm,
   ICSCalendar,
@@ -9,8 +8,10 @@ import {
   ICSTimezoneObservance,
   ICSTodo,
 } from '../../types'
-import { AssemblyIssue, StackEntry } from './types'
+import { PropertyToken, Token } from '../tokenizer/types'
+
 import { PropertyAssignerRegistry } from './registry'
+import { AssemblyIssue, StackEntry } from './types'
 
 export type AssembleResult = {
   calendar: ICSCalendar
@@ -162,7 +163,7 @@ export function assemble(tokens: Token[]): AssembleResult {
     assignProperty(current, token, warnings, registry)
   }
 
-  if (!calendar) {
+  if (Object.keys(calendar).length === 0) {
     errors.push({ message: 'No VCALENDAR component found in input' })
     return {
       calendar: { prodId: '', version: '', events: [], todos: [], journals: [], timezones: [] },
@@ -185,14 +186,20 @@ function assignProperty(
 ): void {
   const { name, value, params } = token
   const assigner = registry.getAssigner(entry.kind)
+  if (!assigner) {
+    warnings.push({
+      message: `No assigner registered for component type: ${entry.kind}`,
+      property: name,
+    })
+    return
+  }
 
-  if (assigner) {
-    assigner.assignProperty(entry.data, name, value, params, warnings)
-  } else {
-    if (name.startsWith('X-')) {
+  assigner.assignProperty(entry.data, name, value, params, warnings)
+
+  if (name.startsWith('X-')) {
       const ext: ICSExtendedProperty = { name, value, params }
-      if ('extended' in entry.data && Array.isArray((entry.data as any).extended)) {
-        ;(entry.data as any).extended.push(ext)
+      if ('extended' in entry.data && Array.isArray((entry.data).extended)) {
+        entry.data.extended.push(ext)
       }
       return
     }
@@ -201,12 +208,6 @@ function assignProperty(
       ;(entry.data as ICSTimezone).tzid = value
       return
     }
-
-    warnings.push({
-      message: `No assigner registered for component type: ${entry.kind}`,
-      property: name,
-    })
-  }
 }
 
 /**

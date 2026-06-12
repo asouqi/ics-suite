@@ -1,6 +1,7 @@
+import { ICSDateOrDateTime, ICSDuration } from '../../types'
+
 import { IPropertyHandler } from './types'
 import { parseDateOrDateTime, parseDuration } from './util'
-import { ICSDateOrDateTime, ICSDuration } from '../../types'
 
 
 export class PropertyHandlers {
@@ -47,7 +48,7 @@ export class PropertyHandlers {
 
   static addValue(key: string): IPropertyHandler<Record<string, string[]>> {
     return {
-      handle: (data, value, params) => {
+      handle: (data, value, _) => {
         data[key] = data[key] ?? []
         data[key].push(value)
       },
