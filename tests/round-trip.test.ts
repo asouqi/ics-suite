@@ -413,7 +413,7 @@ describe('Round-trip: Parse → Serialize', () => {
         const { calendar: reparsed } = parse(output)
 
         const event = reparsed.events![0]
-        // expect(event.summary).toBe('Meeting; with, special\\chars\nand newlines')
+        expect(event.summary).toBe('Meeting; with, special\\chars\nand newlines')
         expect(event.description).toBe('Line 1\nLine 2\nLine 3')
 
         expect(output).toContain('SUMMARY:Meeting\\; with\\, special\\\\chars\\nand newlines')
