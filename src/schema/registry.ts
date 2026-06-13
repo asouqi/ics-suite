@@ -1,12 +1,6 @@
-import {
-  AlarmAssigner,
-  CalendarAssigner,
-  EventAssigner,
-  JournalAssigner,
-  TimezoneObservance,
-  TodoAssigner,
-} from './component'
-import type { IComponentPropertyAssigner, IPropertyAssignerRegistry } from './types'
+import {Alarm, Calendar, Event, Journal, Timezone, TimezoneObservance, Todo} from "../schema";
+
+import {IComponentPropertyAssigner, IPropertyAssignerRegistry} from "./types";
 
 export class PropertyAssignerRegistry implements IPropertyAssignerRegistry {
   private assigner = new Map<string, IComponentPropertyAssigner>()
@@ -22,13 +16,14 @@ export class PropertyAssignerRegistry implements IPropertyAssignerRegistry {
   static create(): PropertyAssignerRegistry {
     const registry = new PropertyAssignerRegistry()
 
-    registry.register('VCALENDAR', new CalendarAssigner())
-    registry.register('VEVENT', new EventAssigner())
-    registry.register('VTODO', new TodoAssigner())
-    registry.register('VJOURNAL', new JournalAssigner())
-    registry.register('VALARM', new AlarmAssigner())
+    registry.register('VCALENDAR', new Calendar())
+    registry.register('VEVENT', new Event())
+    registry.register('VTODO', new Todo())
+    registry.register('VJOURNAL', new Journal())
+    registry.register('VALARM', new Alarm())
+    registry.register('VTIMEZONE', new Timezone())
     registry.register('STANDARD', new TimezoneObservance())
-    registry.register('DAYLIGHT', new AlarmAssigner())
+    registry.register('DAYLIGHT', new TimezoneObservance())
 
     return registry
   }

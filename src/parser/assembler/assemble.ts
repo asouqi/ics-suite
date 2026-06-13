@@ -1,3 +1,4 @@
+import {PropertyAssignerRegistry} from "../../schema/registry"
 import {
   ICSAlarm,
   ICSCalendar,
@@ -10,7 +11,6 @@ import {
 } from '../../types'
 import { PropertyToken, Token } from '../tokenizer/types'
 
-import { PropertyAssignerRegistry } from './registry'
 import { AssemblyIssue, StackEntry } from './types'
 
 export type AssembleResult = {

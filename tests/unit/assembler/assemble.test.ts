@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import {beforeAll, describe, expect, it} from 'vitest'
 
 import { tokenize, unfold } from '../../../src/parser'
 import { assemble } from '../../../src/parser/assembler/assemble'
@@ -165,6 +165,201 @@ describe('assemble — VALARM', () => {
     expect(event.alarms![0].description).toBe('Reminder')
   })
 })
+
+describe('assemble - VTIMEZONE', () => {
+  let wrapCalendarWithTimezone: (timezone: string) => string
+  let timezones = { NewYork: '', Amman: '' }
+
+  beforeAll(() => {
+    wrapCalendarWithTimezone = (timezone) => [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Example//EN',
+       timezone,
+      'END:VCALENDAR',
+    ].join('\r\n')
+
+    timezones = {
+      NewYork: [
+        'BEGIN:VTIMEZONE',
+        'TZID:America/New_York',
+        'BEGIN:STANDARD',
+        'TZOFFSETFROM:-0400',
+        'TZOFFSETTO:-0500',
+        'TZNAME:EST',
+        'DTSTART:19701101T020000',
+        'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+        'END:STANDARD',
+        'BEGIN:DAYLIGHT',
+        'TZOFFSETFROM:-0500',
+        'TZOFFSETTO:-0400',
+        'TZNAME:EDT',
+        'DTSTART:19700308T020000',
+        'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+        'END:DAYLIGHT',
+        'END:VTIMEZONE',
+      ].join('\r\n'),
+      Amman: [
+        'BEGIN:VTIMEZONE',
+        'TZID:Asia/Amman',
+        'BEGIN:STANDARD',
+        'TZOFFSETFROM:+0300',
+        'TZOFFSETTO:+0300',
+        'TZNAME:EET',
+        'DTSTART:19700101T000000',
+        'END:STANDARD',
+        'END:VTIMEZONE',
+      ].join('\r\n')
+    }
+  })
+
+  it('attaches a VTIMEZONE to calendar.timezones', () => {
+    const { calendar, errors } = parse(wrapCalendarWithTimezone(timezones.NewYork))
+
+    expect(errors).toHaveLength(0)
+    expect(calendar.timezones).toHaveLength(1)
+    expect(calendar.timezones![0].tzid).toBe('America/New_York')
+  })
+
+  it('capture the STANDARD observance', () => {
+    const { calendar } = parse(wrapCalendarWithTimezone(timezones.NewYork))
+    const timezone = calendar.timezones![0]
+
+    expect(timezone.standard).toBeDefined()
+    expect(timezone.standard?.tzOffsetFrom).toBe('-0400')
+    expect(timezone.standard?.tzOffsetTo).toBe('-0500')
+    expect(timezone.standard?.tzName).toBe('EST')
+    expect(timezone.standard?.dtStart).toBe('19701101T020000')
+    expect(timezone.standard?.rrule).toBe('FREQ=YEARLY;BYMONTH=11;BYDAY=1SU')
+  })
+
+  it('capture the DAYLIGHT observance', () => {
+    const { calendar } = parse(wrapCalendarWithTimezone(timezones.NewYork))
+    const timezone = calendar.timezones![0]
+
+    expect(timezone.daylight).toBeDefined()
+    expect(timezone.daylight?.tzOffsetFrom).toBe('-0500')
+    expect(timezone.daylight?.tzOffsetTo).toBe('-0400')
+    expect(timezone.daylight?.tzName).toBe('EDT')
+    expect(timezone.daylight?.dtStart).toBe('19700308T020000')
+    expect(timezone.daylight?.rrule).toBe('FREQ=YEARLY;BYMONTH=3;BYDAY=2SU')
+  })
+
+  it('captures a fixed-offset timezone with only a STANDARD block', () => {
+    const { calendar } = parse(wrapCalendarWithTimezone(timezones.Amman))
+    const timezone = calendar.timezones![0]
+
+    expect(timezone.tzid).toBe('Asia/Amman')
+    expect(timezone.standard).toBeDefined()
+    expect(timezone.standard?.tzOffsetFrom).toBe('+0300')
+    expect(timezone.standard?.tzOffsetTo).toBe('+0300')
+    expect(timezone.daylight).toBeUndefined()
+  })
+
+  it('captures all timezones when multiple are present', () => {
+    const { calendar } = parse(wrapCalendarWithTimezone([timezones.NewYork, timezones.Amman].join('\r\n')))
+
+    expect(calendar.timezones).toHaveLength(2)
+    expect(calendar.timezones[0].tzid).toBe('America/New_York')
+    expect(calendar.timezones[1].tzid).toBe('Asia/Amman')
+  })
+
+  it('parses an event that references a VTIMEZONE by TZID', () => {
+    const event = [
+      'BEGIN:VEVENT',
+      'UID:tzref@example.com',
+      'DTSTAMP:20240101T000000Z',
+      'DTSTART;TZID=America/New_York:20240101T090000',
+      'DTEND;TZID=America/New_York:20240101T100000',
+      'SUMMARY:Meeting in New York',
+      'END:VEVENT',
+    ].join('\r\n')
+
+    const { calendar, errors } = parse(wrapCalendarWithTimezone([timezones.NewYork, event].join('\r\n')))
+
+    expect(errors).toHaveLength(0)
+    expect(calendar.events![0].dtStart).toMatchObject({ tzid: 'America/New_York' })
+    expect(calendar.events![0].dtEnd).toMatchObject({ tzid: 'America/New_York' })
+  })
+
+  it('parses an event that comes before its VTIMEZONE in the file', () => {
+    const event = [
+      'BEGIN:VEVENT',
+      'UID:before@example.com',
+      'DTSTAMP:20240101T000000Z',
+      'DTSTART;TZID=America/New_York:20240101T090000',
+      'SUMMARY:Event before timezone definition',
+      'END:VEVENT',
+    ].join('\r\n')
+
+    const { calendar, errors } = parse(wrapCalendarWithTimezone([event, timezones.NewYork].join('\r\n')))
+
+    expect(errors).toHaveLength(0)
+    expect(calendar.events![0].dtStart).toMatchObject({ tzid: 'America/New_York' })
+    expect(calendar.timezones).toHaveLength(1)
+    expect(calendar.timezones[0].tzid).toBe('America/New_York')
+  })
+
+  it('handles a Google-style timezone block with X- properties', () => {
+    const googleTZ = [
+      'BEGIN:VTIMEZONE',
+      'TZID:America/New_York',
+      'X-LIC-LOCATION:America/New_York',
+      'BEGIN:DAYLIGHT',
+      'TZOFFSETFROM:-0500',
+      'TZOFFSETTO:-0400',
+      'TZNAME:EDT',
+      'DTSTART:19700308T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+      'END:DAYLIGHT',
+      'BEGIN:STANDARD',
+      'TZOFFSETFROM:-0400',
+      'TZOFFSETTO:-0500',
+      'TZNAME:EST',
+      'DTSTART:19701101T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+      'END:STANDARD',
+      'END:VTIMEZONE',
+    ].join('\r\n')
+
+    const { calendar, errors } = parse(wrapCalendarWithTimezone(googleTZ))
+
+    expect(errors).toHaveLength(0)
+    expect(calendar.timezones[0].tzid).toBe('America/New_York')
+    expect(calendar.timezones[0].standard).toBeDefined()
+    expect(calendar.timezones[0].daylight).toBeDefined()
+  })
+
+  it('handles DAYLIGHT appearing before STANDARD in the file', () => {
+    const googleTZ = [
+      'BEGIN:VTIMEZONE',
+      'TZID:America/Chicago',
+      'BEGIN:DAYLIGHT',
+      'TZOFFSETFROM:-0600',
+      'TZOFFSETTO:-0500',
+      'TZNAME:CDT',
+      'DTSTART:19700308T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+      'END:DAYLIGHT',
+      'BEGIN:STANDARD',
+      'TZOFFSETFROM:-0500',
+      'TZOFFSETTO:-0600',
+      'TZNAME:CST',
+      'DTSTART:19701101T020000',
+      'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+      'END:STANDARD',
+      'END:VTIMEZONE',
+    ].join('\r\n')
+
+    const { calendar } = parse(wrapCalendarWithTimezone(googleTZ))
+    const timezones = calendar.timezones[0]
+
+    expect(timezones.tzid).toBe('America/Chicago')
+    expect(timezones.standard?.tzName).toBe('CST')
+    expect(timezones.daylight?.tzName).toBe('CDT')
+  })
+})
+
 
 describe('assemble - error handling', () => {
   it('assemble — error handling', () => {
