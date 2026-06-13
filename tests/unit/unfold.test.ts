@@ -1,6 +1,7 @@
 import {describe, expect, it} from "vitest";
 
-import {unfold} from "../../src/parser"
+import {unfold} from "../../src/parser/unfold";
+
 
 describe('unfold', () => {
     it('returns a single line unchanged', () => {

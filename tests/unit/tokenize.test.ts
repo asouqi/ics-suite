@@ -1,6 +1,7 @@
 import { describe, expect, it} from "vitest";
 
-import { tokenizeLine } from "../../src/parser"
+import {tokenizeLine} from "../../src/parser/tokenizer/tokenize"
+
 
 describe('tokenize', () => {
     it('produces a BeginToken for a BEGIN line', () => {

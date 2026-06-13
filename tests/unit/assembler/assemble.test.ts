@@ -1,7 +1,8 @@
 import {beforeAll, describe, expect, it} from 'vitest'
 
-import { tokenize, unfold } from '../../../src/parser'
 import { assemble } from '../../../src/parser/assembler/assemble'
+import {tokenize} from "../../../src/parser/tokenizer/tokenize"
+import {unfold} from "../../../src/parser/unfold"
 
 function parse(ics: string) {
   return assemble(tokenize(unfold(ics)))

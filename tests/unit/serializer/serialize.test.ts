@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
+import type { ICSCalendar } from '../../../src'
 import { serialize } from '../../../src/serializer/serialize'
-import {foldLine} from "../../../src/serializer/util";
-import type { ICSCalendar } from '../../../src/types'
+import {foldLine} from "../../../src/serializer/util"
 
 describe('serialize - ICSCalendar', () => {
     it('serializes a minimal calendar', () => {

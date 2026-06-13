@@ -1,13 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import {tokenize, unfold} from "../src/parser";
-import {assemble} from "../src/parser/assembler/assemble";
+import {parse} from "../src"
 import { serialize } from '../src/serializer/serialize'
-
-// TODO:: remove it and use parse from src
-function parse(ics: string) {
-    return assemble(tokenize(unfold(ics)))
-}
 
 describe('Round-trip: Parse → Serialize', () => {
     it('round-trips a minimal calendar', () => {

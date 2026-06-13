@@ -23,10 +23,6 @@ export type ParseResult = {
 
 export type ParseIssue = {
     message: string
-    line?: number
     property?: string
     raw?: string
 }
-
-// parse(input: string, options?: ParseOptions): ParseResult
-// parseStrict(input: string, options?: ParseOptions): ICSCalendar
