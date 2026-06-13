@@ -116,6 +116,17 @@ export function escapeText(text: string): string {
 }
 
 /**
+ * Unescapes text values from iCalendar format
+ */
+export function unescapeText(text: string): string {
+    return text
+        .replace(/\\n/g, '\n')      // \n → newline
+        .replace(/\\,/g, ',')       // \, → comma
+        .replace(/\\;/g, ';')       // \; → semicolon
+        .replace(/\\\\/g, '\\')     // \\ → backslash (must be last!)
+}
+
+/**
  * Formats a property line with parameters
  */
 export function formatProperty(

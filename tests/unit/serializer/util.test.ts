@@ -1,4 +1,6 @@
 import {describe, it, expect} from "vitest";
+
+import {ICSDateOrDateTime, ICSDuration, ICSRecurrenceRule, ICSTimezone} from "../../../src";
 import {
     foldLine,
     formatProperty,
@@ -7,7 +9,6 @@ import {
     serializeDuration,
     serializeRecurrenceRule, serializeTimezone
 } from "../../../src/serializer/util"
-import {ICSDateOrDateTime, ICSDuration, ICSRecurrenceRule, ICSTimezone} from "../../../src";
 
 
 describe('serializeDate', () => {

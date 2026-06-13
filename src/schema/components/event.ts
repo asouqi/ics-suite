@@ -41,10 +41,15 @@ export class Event extends BasedComponent<ICSEvent> {
             parse: (data, value, params) => {
                 data.organizer = parseOrganizer(value, params)
             },
-            toICS: (value) => {
+            toICS: (data) => {
+                if (!data.organizer) return null
                 const params: Record<string, string> = {}
-                if (value.organizer?.name) params.CN = value.organizer.name
-                return [{ value: `mailto:${value.organizer?.email}`, params }]
+                if (data.organizer.name) params.CN = data.organizer.name
+
+                return [{
+                    value: `mailto:${data.organizer.email}`,
+                    params: Object.keys(params).length > 0 ? params : undefined
+                }]
             }
         }),
         ATTENDEE: P.custom<ICSEvent>({

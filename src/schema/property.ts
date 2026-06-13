@@ -1,5 +1,5 @@
 import {parseDateOrDateTime, parseDuration} from "../parser/assembler"
-import {escapeText, serializeDateTime, serializeDuration} from "../serializer/util"
+import {escapeText, serializeDateTime, serializeDuration, unescapeText} from "../serializer/util"
 import {ICSDateOrDateTime, ICSDuration} from "../types"
 
 import {IPropertyHandler} from "./types";
@@ -8,7 +8,7 @@ export class PropertyHandlers {
   static string(key: string): IPropertyHandler<Record<string, string>> {
     return {
       parse: (data, value, _) => {
-        data[key] = value
+        data[key] = unescapeText(value)
       },
       toICS: (data) => {
         const val = data[key]
@@ -96,7 +96,7 @@ export class PropertyHandlers {
     return {
       parse: (data, value) => {
         data[key] = data[key] ?? []
-        data[key].push(value)
+        data[key].push(unescapeText(value))
       },
       toICS: (data) => {
         const values = data[key]

@@ -27,7 +27,7 @@ export class Alarm extends BasedComponent<ICSAlarm> {
                     ? data.trigger
                     : serializeDuration(data.trigger)
 
-                return [{ value, params }]
+                return [{ value, params: Object.keys(params).length > 0 ? params : undefined }]
             }
         }),
         DESCRIPTION: P.string('description'),

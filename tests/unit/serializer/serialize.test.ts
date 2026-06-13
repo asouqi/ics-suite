@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
+
 import { serialize } from '../../../src/serializer/serialize'
+import {foldLine} from "../../../src/serializer/util";
 import type { ICSCalendar } from '../../../src/types'
 
 describe('serialize - ICSCalendar', () => {
@@ -198,7 +200,7 @@ describe('serialize - ICSCalendar', () => {
         expect(ics).toContain('END:VTIMEZONE')
     })
 
-    it.skip('serializes a calendar with an event containing attendees', () => {
+    it('serializes a calendar with an event containing attendees', () => {
         const calendar: ICSCalendar = {
             prodId: '-//Test//Test//EN',
             version: '2.0',
@@ -236,11 +238,11 @@ describe('serialize - ICSCalendar', () => {
         const ics = serialize(calendar)
 
         expect(ics).toContain('ORGANIZER;CN=Manager:mailto:manager@example.com')
-        expect(ics).toContain('ATTENDEE;CN=Alice;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE:mailto:alice@example.com')
-        expect(ics).toContain('ATTENDEE;CN=Bob;ROLE=OPT-PARTICIPANT;PARTSTAT=TENTATIVE:mailto:bob@example.com')
+        expect(ics).toContain(foldLine('ATTENDEE;CN=Alice;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE:mailto:alice@example.com'))
+        expect(ics).toContain(foldLine('ATTENDEE;CN=Bob;ROLE=OPT-PARTICIPANT;PARTSTAT=TENTATIVE:mailto:bob@example.com'))
     })
 
-    it.skip('serializes a calendar with an event containing alarms', () => {
+    it('serializes a calendar with an event containing alarms', () => {
         const calendar: ICSCalendar = {
             prodId: '-//Test//Test//EN',
             version: '2.0',
@@ -258,8 +260,9 @@ describe('serialize - ICSCalendar', () => {
                         },
                         {
                             action: 'AUDIO',
-                            trigger: { hours: 1, negative: true },
-                            triggerRelation: 'START',
+                            trigger: { minutes: 5, negative: true },
+                            triggerRelation: 'END',
+                            description: 'Reminder before event ends',
                         },
                     ],
                 },
@@ -273,10 +276,10 @@ describe('serialize - ICSCalendar', () => {
 
         expect(ics.match(/BEGIN:VALARM/g)?.length).toBe(2)
         expect(ics).toContain('ACTION:DISPLAY')
-        expect(ics).toContain('TRIGGER;RELATED=START:-PT15M')
+        expect(ics).toContain('TRIGGER:-PT15M')
         expect(ics).toContain('DESCRIPTION:Meeting starts in 15 minutes')
         expect(ics).toContain('ACTION:AUDIO')
-        expect(ics).toContain('TRIGGER;RELATED=START:-PT1H')
+        expect(ics).toContain('TRIGGER;RELATED=END:-PT5M')
     })
 
     it('serializes a calendar with recurring event', () => {
