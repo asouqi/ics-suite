@@ -2,7 +2,7 @@ import { Temporal } from 'temporal-polyfill'
 import { describe, expect, it } from 'vitest'
 
 import { parse } from '../../src'
-import { expand } from '../../src/expander'
+import { expandEvent } from '../../src/expander'
 
 
 function parseEvent(ics: string) {
@@ -25,7 +25,7 @@ function wrapEvent(props: string[]) {
 const WINDOW_START = Temporal.PlainDate.from('2024-01-01')
 const WINDOW_END = Temporal.PlainDate.from('2024-01-31')
 
-describe('expand — non-recurring event', () => {
+describe('expandEvent — non-recurring event', () => {
   it('returns a single instance when the event falls within the window', () => {
     const event = parseEvent(
       wrapEvent([
@@ -37,7 +37,7 @@ describe('expand — non-recurring event', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(1)
     expect(instances[0].event.uid).toBe('single@example.com')
@@ -56,7 +56,7 @@ describe('expand — non-recurring event', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(0)
   })
@@ -72,7 +72,7 @@ describe('expand — non-recurring event', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(0)
   })
@@ -88,14 +88,14 @@ describe('expand — non-recurring event', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(1)
     expect(instances[0].start).toBeInstanceOf(Temporal.PlainDate)
   })
 })
 
-describe('expand — FREQ=DAILY', () => {
+describe('expandEvent — FREQ=DAILY', () => {
   it('returns the correct number of daily instances in a window', () => {
     const event = parseEvent(
       wrapEvent([
@@ -107,7 +107,7 @@ describe('expand — FREQ=DAILY', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END, inclusive: true })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END, inclusive: true })
 
     expect(instances).toHaveLength(31)
   })
@@ -122,7 +122,7 @@ describe('expand — FREQ=DAILY', () => {
         'SUMMARY:Infinite daily',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END, inclusive: true })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END, inclusive: true })
 
     expect(instances).toHaveLength(31)
     for (const instance of instances) {
@@ -140,7 +140,7 @@ describe('expand — FREQ=DAILY', () => {
         'SUMMARY:Every other day',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(5)
   })
@@ -155,7 +155,7 @@ describe('expand — FREQ=DAILY', () => {
         'SUMMARY:Five days',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(5)
   })
@@ -170,13 +170,13 @@ describe('expand — FREQ=DAILY', () => {
         'SUMMARY:Until Jan 5',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(5)
   })
 })
 
-describe('expand — FREQ=WEEKLY', () => {
+describe('expandEvent — FREQ=WEEKLY', () => {
   it('returns one instance per week', () => {
     const event = parseEvent(
       wrapEvent([
@@ -187,12 +187,12 @@ describe('expand — FREQ=WEEKLY', () => {
         'SUMMARY:Weekly event',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(4)
   })
 
-  it('expands BYDAY into multiple days per week', () => {
+  it('expandEvents BYDAY into multiple days per week', () => {
     const event = parseEvent(
       wrapEvent([
         'UID:mwf@example.com',
@@ -202,7 +202,7 @@ describe('expand — FREQ=WEEKLY', () => {
         'SUMMARY:Mon Wed Fri',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     // Week 1: 1(Mo), 3(We), 5(Fr), Week 2: 8(Mo), 10(We), 12(Fr)
     expect(instances).toHaveLength(6)
@@ -218,14 +218,14 @@ describe('expand — FREQ=WEEKLY', () => {
         'SUMMARY:Biweekly',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     // Jan 1, Jan 15, Jan 29
     expect(instances).toHaveLength(3)
   })
 })
 
-describe('expand — FREQ=MONTHLY', () => {
+describe('expandEvent — FREQ=MONTHLY', () => {
   it('returns one instance per month', () => {
     const event = parseEvent(
       wrapEvent([
@@ -240,13 +240,13 @@ describe('expand — FREQ=MONTHLY', () => {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2024-03-31')
     }
-    const instances = expand(event, window)
+    const instances = expandEvent(event, window)
 
     // Jan 15, Fab 15, Mar 15
     expect(instances).toHaveLength(3)
   })
 
-  it('expands BYDAY — first Monday of each month', () => {
+  it('expandEvents BYDAY — first Monday of each month', () => {
     const event = parseEvent(
       wrapEvent([
         'UID:first-monday@example.com',
@@ -260,12 +260,12 @@ describe('expand — FREQ=MONTHLY', () => {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2024-03-31'),
     }
-    const instances = expand(event, window)
+    const instances = expandEvent(event, window)
 
     expect(instances).toHaveLength(3)
   })
 
-  it('expands BYDAY — last Friday of each month via BYSETPOS', () => {
+  it('expandEvents BYDAY — last Friday of each month via BYSETPOS', () => {
     const event = parseEvent(
       wrapEvent([
         'UID:last-friday@example.com',
@@ -279,7 +279,7 @@ describe('expand — FREQ=MONTHLY', () => {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2024-03-31'),
     }
-    const instances = expand(event, window)
+    const instances = expandEvent(event, window)
 
     expect(instances).toHaveLength(3)
     // Jan last Friday = Jan 26, Feb last Friday = Feb 23, Mar last Friday = Mar 29
@@ -288,7 +288,7 @@ describe('expand — FREQ=MONTHLY', () => {
   })
 })
 
-describe('expand — FREQ=YEARLY', () => {
+describe('expandEvent — FREQ=YEARLY', () => {
   it('returns one instance per year', () => {
     const event = parseEvent(
       wrapEvent([
@@ -303,13 +303,13 @@ describe('expand — FREQ=YEARLY', () => {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2026-12-31'),
     }
-    const instances = expand(event, window)
+    const instances = expandEvent(event, window)
 
     expect(instances).toHaveLength(3)
   })
 })
 
-describe('expand — EXDATE', () => {
+describe('expandEvent — EXDATE', () => {
   it('excludes dates listed in EXDATE', () => {
     const event = parseEvent(
       wrapEvent([
@@ -322,7 +322,7 @@ describe('expand — EXDATE', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(4)
     const days = instances.map(({ start }) => start.day)
@@ -342,7 +342,7 @@ describe('expand — EXDATE', () => {
       ]),
     )
 
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     expect(instances).toHaveLength(3)
     const days = instances.map(({ start }) => start.day)
@@ -350,7 +350,7 @@ describe('expand — EXDATE', () => {
   })
 })
 
-describe('expand — RECURRENCE-ID overrides', () => {
+describe('expandEvent — RECURRENCE-ID overrides', () => {
   it('replaces a generated instance with its override', () => {
     const raw = [
       'BEGIN:VCALENDAR',
@@ -378,7 +378,7 @@ describe('expand — RECURRENCE-ID overrides', () => {
 
     const { calendar } = parse(raw)
     const baseEvent = calendar.events![0]
-    const instances = expand(baseEvent, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(baseEvent, { start: WINDOW_START, end: WINDOW_END })
     expect(instances).toHaveLength(3)
 
     // 8 Jan instance should be the override
@@ -411,14 +411,14 @@ describe('expand — RECURRENCE-ID overrides', () => {
     ].join('\r\n')
 
     const { calendar } = parse(raw)
-    const instances = expand(calendar.events![0], { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(calendar.events![0], { start: WINDOW_START, end: WINDOW_END })
 
     const nonOverrideEvents = instances.filter(({ isOverride }) => !isOverride)
     expect(nonOverrideEvents).toHaveLength(2)
   })
 })
 
-describe('expand — options', () => {
+describe('expandEvent — options', () => {
   it('respects maxInstances as a hard cap', () => {
     const event = parseEvent(
       wrapEvent([
@@ -429,7 +429,7 @@ describe('expand — options', () => {
         'SUMMARY:Infinite daily',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END, maxInstances: 5 })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END, maxInstances: 5 })
 
     expect(instances).toHaveLength(5)
   })
@@ -444,7 +444,7 @@ describe('expand — options', () => {
         'SUMMARY:Daily',
       ]),
     )
-    const instances = expand(event, {
+    const instances = expandEvent(event, {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2024-01-05'),
       inclusive: true,
@@ -463,7 +463,7 @@ describe('expand — options', () => {
         'SUMMARY:Daily',
       ]),
     )
-    const instances = expand(event, {
+    const instances = expandEvent(event, {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2024-01-05'),
       inclusive: false,
@@ -482,7 +482,7 @@ describe('expand — options', () => {
         'SUMMARY:Infinite daily',
       ]),
     )
-    const instances = expand(event, {
+    const instances = expandEvent(event, {
       start: Temporal.PlainDate.from('2024-01-01'),
       end: Temporal.PlainDate.from('2030-12-31'),
       inclusive: false,
@@ -492,7 +492,7 @@ describe('expand — options', () => {
   })
 })
 
-describe('expand — ExpandedEvent shape', () => {
+describe('expandEvent — expandEventedEvent shape', () => {
   it('each instance has start, end, event, and isOverride', () => {
     const event = parseEvent(
       wrapEvent([
@@ -504,7 +504,7 @@ describe('expand — ExpandedEvent shape', () => {
         'SUMMARY:Shape test',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     for (const instance of instances) {
       expect(instance).toHaveProperty('start')
@@ -526,7 +526,7 @@ describe('expand — ExpandedEvent shape', () => {
         'SUMMARY:Temporal test',
       ]),
     )
-    const instances = expand(event, { start: WINDOW_START, end: WINDOW_END })
+    const instances = expandEvent(event, { start: WINDOW_START, end: WINDOW_END })
 
     for (const instance of instances) {
       expect(instance.start).not.toBeInstanceOf(Date)
