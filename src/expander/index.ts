@@ -285,3 +285,5 @@ export function expandEvent(event: ICSEvent, options: ExpandOptions) {
 
   return expandedEvent
 }
+
+export type { ExpandedEvent, ExpandOptions } from './types'
