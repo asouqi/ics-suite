@@ -522,7 +522,7 @@ describe('query — .count()', () => {
 })
 
 describe('query — .conflicts()', () => {
-    it.skip('returns pairs of overlapping events', () => {
+    it('returns pairs of overlapping events', () => {
         const calendar = parseCalendar(CONFLICT_CALENDAR)
         const pairs = query(calendar).between(JAN_START, JAN_END).conflicts()
 

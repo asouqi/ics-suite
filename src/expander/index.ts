@@ -195,12 +195,7 @@ function buildInstance(
   const override = overrideMap.get(key)
 
   // Calculate the end by adding duration to start
-  let end: Temporal.ZonedDateTime | Temporal.PlainDate
-  if (start instanceof Temporal.PlainDate) {
-    end = start.add(duration)
-  } else {
-    end = start.add(duration)
-  }
+  const end: Temporal.ZonedDateTime | Temporal.PlainDate = start.add(duration)
 
   return {
     start,
@@ -227,7 +222,7 @@ export function expandEvent(event: ICSEvent, options: ExpandOptions) {
   const dtStartTemporal = toTemporal(event.dtStart, defaultTimezone)
   const dtStartPlain = toPlainDate(dtStartTemporal)
 
-  const duration = getEventDuration(event, dtStartPlain, defaultTimezone)
+  const duration = getEventDuration(event, dtStartTemporal, defaultTimezone)
 
   const exDateSet = buildExDateSet(event, defaultTimezone)
   const overrideMap = buildOverrideMap(event, defaultTimezone)
