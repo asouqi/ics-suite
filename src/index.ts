@@ -15,3 +15,4 @@ export * from "./parser/index"
 export * from "./validator/index"
 export * from "./expander/index"
 export * from "./query/index"
+export * from './diff/index'

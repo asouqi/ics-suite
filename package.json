@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Parse, query, validate and diff .ics calendar files",
   "author": "Ahmad Souqi",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -55,5 +55,28 @@
   },
   "dependencies": {
     "temporal-polyfill": "^0.3.2"
+  },
+  "keywords": [
+    "ics",
+    "ical",
+    "icalendar",
+    "rfc5545",
+    "vcalendar",
+    "vevent",
+    "calendar",
+    "parser",
+    "query",
+    "validator",
+    "diff",
+    "recurrence",
+    "rrule",
+    "recurring-events",
+    "calendar-sync",
+    "timezone",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asouqi/ics-suite.git"
   }
 }
