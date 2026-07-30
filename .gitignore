@@ -9,9 +9,9 @@ pnpm-debug.log*
 lerna-debug.log*
 
 /node_modules/*
-/examples/node_modules/*
+/demo/node_modules/*
 /dist
-/examples/dist
+/demo/dist
 /dist-ssr
 /*.local
 
@@ -19,7 +19,7 @@ lerna-debug.log*
 .vscode/*
 !.vscode/extensions.json
 .idea
-./examples/.idea
+demo/.idea
 
 .DS_Store
 *.suo

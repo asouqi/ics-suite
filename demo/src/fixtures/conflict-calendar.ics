@@ -1,0 +1,122 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Apple Inc.//Mac OS X 14.2.1//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Alice — Work
+X-WR-TIMEZONE:America/New_York
+BEGIN:VTIMEZONE
+TZID:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:investor-call-jan@alice.example.com
+DTSTAMP:20240108T090000Z
+CREATED:20240105T143000Z
+LAST-MODIFIED:20240108T090000Z
+DTSTART;TZID=America/New_York:20240118T090000
+DTEND;TZID=America/New_York:20240118T103000
+SUMMARY:Investor call — Series B update
+DESCRIPTION:Quarterly update call with Series B investors. Prepare the
+  revenue dashboard and Q4 metrics before the call.
+LOCATION:Zoom — investor room
+ORGANIZER;CN=Alice Johnson:mailto:alice@alice.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@alice.example.com
+ATTENDEE;CN=Sarah Kim;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:sarah@vc.example.com
+ATTENDEE;CN=James Park;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:james@vc.example.com
+STATUS:CONFIRMED
+CLASS:CONFIDENTIAL
+CATEGORIES:investor,finance
+SEQUENCE:1
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+DESCRIPTION:Investor call in 30 minutes — prepare metrics
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:engineering-allhands-jan@alice.example.com
+DTSTAMP:20240101T080000Z
+CREATED:20231215T100000Z
+LAST-MODIFIED:20240101T080000Z
+DTSTART;TZID=America/New_York:20240118T100000
+DTEND;TZID=America/New_York:20240118T120000
+SUMMARY:Engineering all-hands — January
+DESCRIPTION:Monthly engineering all-hands. Attendance mandatory. Topics:
+  Q1 planning\, infrastructure migration update\, hiring status.
+LOCATION:Main conference room\, Floor 4
+ORGANIZER;CN=Bob Smith:mailto:bob@alice.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:alice@alice.example.com
+ATTENDEE;CN=Bob Smith;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:bob@alice.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:carol@alice.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:engineering,all-hands
+SEQUENCE:0
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Engineering all-hands starting soon
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lunch-jan@alice.example.com
+DTSTAMP:20240110T120000Z
+CREATED:20240110T120000Z
+LAST-MODIFIED:20240110T120000Z
+DTSTART;TZID=America/New_York:20240118T123000
+DTEND;TZID=America/New_York:20240118T133000
+SUMMARY:Lunch with Frank — candidate debrief
+DESCRIPTION:Post-interview debrief lunch with Frank Chen to discuss the
+  senior engineer candidates from last week.
+LOCATION:The Modern — 9 W 53rd St
+ORGANIZER;CN=Alice Johnson:mailto:alice@alice.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@alice.example.com
+ATTENDEE;CN=Frank Chen;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:frank@alice.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:lunch,recruiting
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1on1-david-jan@alice.example.com
+DTSTAMP:20240101T080000Z
+CREATED:20231201T080000Z
+LAST-MODIFIED:20240101T080000Z
+DTSTART;TZID=America/New_York:20240118T150000
+DTEND;TZID=America/New_York:20240118T160000
+SUMMARY:1:1 with David Lee
+DESCRIPTION:Weekly 1:1. Current focus: performance review prep and
+  Q1 goal setting.
+ORGANIZER;CN=Alice Johnson:mailto:alice@alice.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@alice.example.com
+ATTENDEE;CN=David Lee;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:david@alice.example.com
+STATUS:CONFIRMED
+CLASS:PRIVATE
+CATEGORIES:1on1,management
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR

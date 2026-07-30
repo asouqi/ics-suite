@@ -1,0 +1,123 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Engineering Team
+X-WR-TIMEZONE:America/New_York
+BEGIN:VTIMEZONE
+TZID:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:weekly-sync-v1@engineering.example.com
+DTSTAMP:20240110T090000Z
+CREATED:20231201T080000Z
+LAST-MODIFIED:20240110T090000Z
+DTSTART;TZID=America/New_York:20240108T150000
+DTEND;TZID=America/New_York:20240108T160000
+SUMMARY:Weekly engineering sync
+DESCRIPTION:Weekly sync covering sprint progress\, blockers\, and upcoming
+  work. All engineers expected to attend.
+LOCATION:Conference Room B
+ORGANIZER;CN=Alice Johnson:mailto:alice@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:carol@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:engineering,sync
+RRULE:FREQ=WEEKLY;BYDAY=MO;COUNT=8
+SEQUENCE:1
+END:VEVENT
+BEGIN:VEVENT
+UID:offsite-planning-v1@engineering.example.com
+DTSTAMP:20240108T110000Z
+CREATED:20240103T090000Z
+LAST-MODIFIED:20240108T110000Z
+DTSTART;TZID=America/New_York:20240120T100000
+DTEND;TZID=America/New_York:20240120T160000
+SUMMARY:Q1 offsite planning session
+DESCRIPTION:Full day planning session for Q1 engineering goals.
+LOCATION:The Workshop — 123 Main St\, Brooklyn
+ORGANIZER;CN=Alice Johnson:mailto:alice@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:carol@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:engineering,planning
+SEQUENCE:1
+END:VEVENT
+BEGIN:VTODO
+UID:write-docs-v1@engineering.example.com
+DTSTAMP:20240112T170000Z
+CREATED:20240101T080000Z
+LAST-MODIFIED:20240112T170000Z
+SUMMARY:Write API documentation for v2 endpoints
+DESCRIPTION:Document all new v2 API endpoints before the public launch.
+DUE;TZID=America/New_York:20240131T170000
+COMPLETED:20240112T170000Z
+STATUS:COMPLETED
+PRIORITY:1
+PERCENT-COMPLETE:100
+CATEGORIES:docs,engineering
+END:VTODO
+BEGIN:VEVENT
+UID:release-day-v1@engineering.example.com
+DTSTAMP:20240101T080000Z
+CREATED:20240101T080000Z
+LAST-MODIFIED:20240101T080000Z
+DTSTART;VALUE=DATE:20240131
+DTEND;VALUE=DATE:20240201
+SUMMARY:v2.0 release day
+DESCRIPTION:Public launch of v2.0. Freeze deployments at 9am\, monitor
+  dashboards throughout the day.
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:release,engineering
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:post-launch-retro@engineering.example.com
+DTSTAMP:20240112T080000Z
+CREATED:20240112T080000Z
+LAST-MODIFIED:20240112T080000Z
+DTSTART;TZID=America/New_York:20240201T140000
+DTEND;TZID=America/New_York:20240201T150000
+SUMMARY:Post-launch retrospective
+DESCRIPTION:Retrospective on the v2.0 launch. What went well\, what did not\,
+  and what we will do differently next time.
+LOCATION:Conference Room A
+ORGANIZER;CN=Alice Johnson:mailto:alice@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION:
+ mailto:carol@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:engineering,retro
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR

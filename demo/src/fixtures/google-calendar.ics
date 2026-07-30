@@ -1,0 +1,126 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Engineering Team
+X-WR-TIMEZONE:America/New_York
+X-WR-CALDESC:Engineering team shared calendar
+BEGIN:VTIMEZONE
+TZID:America/New_York
+X-LIC-LOCATION:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:product-review-jan@engineering.example.com
+DTSTAMP:20240102T083000Z
+CREATED:20231215T100000Z
+LAST-MODIFIED:20240102T083000Z
+DTSTART;TZID=America/New_York:20240110T100000
+DTEND;TZID=America/New_York:20240110T110000
+SUMMARY:Product review — Q1 roadmap
+DESCRIPTION:Quarterly product review covering the Q1 roadmap\, OKR progress\,
+  and upcoming feature prioritisation. Bring your team updates.
+LOCATION:Conference Room A\, Floor 3
+ORGANIZER;CN=Alice Johnson:mailto:alice@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED;RSVP=FALSE:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=TENTATIVE;RSVP=TRUE:
+ mailto:carol@engineering.example.com
+ATTENDEE;CN=David Lee;ROLE=OPT-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:
+ mailto:david@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+PRIORITY:5
+CATEGORIES:product,planning
+SEQUENCE:2
+X-GOOGLE-CONFERENCE:https://meet.google.com/abc-defg-hij
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT15M
+DESCRIPTION:Product review — Q1 roadmap
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:backend-sync-jan@engineering.example.com
+DTSTAMP:20240103T090000Z
+CREATED:20231220T143000Z
+LAST-MODIFIED:20240103T090000Z
+DTSTART;TZID=America/New_York:20240115T140000
+DTEND;TZID=America/New_York:20240115T150000
+SUMMARY:Backend infrastructure sync
+DESCRIPTION:Weekly sync to review infrastructure health\, deployment pipeline
+  status\, and any blocking issues across the backend team.
+LOCATION:Zoom — link in description
+ORGANIZER;CN=Bob Smith:mailto:bob@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=CHAIR;PARTSTAT=ACCEPTED;RSVP=FALSE:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Eve Martinez;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE:
+ mailto:eve@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:engineering,infrastructure
+SEQUENCE:0
+X-GOOGLE-CONFERENCE:https://meet.google.com/xyz-uvwx-yz1
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT10M
+DESCRIPTION:Backend infrastructure sync
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:design-review-jan@engineering.example.com
+DTSTAMP:20240104T110000Z
+CREATED:20240102T090000Z
+LAST-MODIFIED:20240104T110000Z
+DTSTART;TZID=America/New_York:20240122T150000
+DTEND;TZID=America/New_York:20240122T160000
+SUMMARY:Design review — onboarding flow
+DESCRIPTION:Design critique session for the new user onboarding flow.
+  Feedback from engineering\, product\, and design required.
+ORGANIZER;CN=Carol White:mailto:carol@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:carol@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Frank Chen;ROLE=REQ-PARTICIPANT;PARTSTAT=DECLINED:
+ mailto:frank@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:design,product
+SEQUENCE:1
+X-GOOGLE-CONFERENCE:https://meet.google.com/pqr-stuv-wx2
+END:VEVENT
+BEGIN:VEVENT
+UID:company-allhands-jan@engineering.example.com
+DTSTAMP:20231201T080000Z
+CREATED:20231201T080000Z
+LAST-MODIFIED:20231201T080000Z
+DTSTART;VALUE=DATE:20240131
+DTEND;VALUE=DATE:20240201
+SUMMARY:Company all-hands — January
+DESCRIPTION:Monthly all-hands meeting. Attendance is mandatory for all staff.
+ORGANIZER;CN=HR Team:mailto:hr@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:company,all-hands
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR

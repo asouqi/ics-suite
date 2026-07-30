@@ -1,0 +1,86 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Engineering Team
+X-WR-TIMEZONE:America/New_York
+BEGIN:VTIMEZONE
+TZID:America/New_York
+X-LIC-LOCATION:America/New_York
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+TZNAME:EST
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:weekly-standup@engineering.example.com
+DTSTAMP:20231201T080000Z
+CREATED:20231201T080000Z
+LAST-MODIFIED:20240105T090000Z
+DTSTART;TZID=America/New_York:20240104T090000
+DTEND;TZID=America/New_York:20240104T091500
+SUMMARY:Weekly engineering standup
+DESCRIPTION:Daily standup for the engineering team. Keep updates to 2 minutes
+  per person: what you did yesterday\, what you are doing today\, any blockers.
+LOCATION:Zoom — standup room
+ORGANIZER;CN=Alice Johnson:mailto:alice@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:carol@engineering.example.com
+ATTENDEE;CN=David Lee;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:david@engineering.example.com
+ATTENDEE;CN=Eve Martinez;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:eve@engineering.example.com
+STATUS:CONFIRMED
+CLASS:PUBLIC
+CATEGORIES:engineering,standup
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;COUNT=20
+EXDATE;TZID=America/New_York:20240115T090000
+SEQUENCE:3
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT2M
+DESCRIPTION:Standup in 2 minutes
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:weekly-standup@engineering.example.com
+DTSTAMP:20240110T170000Z
+CREATED:20240110T170000Z
+LAST-MODIFIED:20240110T170000Z
+RECURRENCE-ID;TZID=America/New_York:20240111T090000
+DTSTART;TZID=America/New_York:20240111T100000
+DTEND;TZID=America/New_York:20240111T101500
+SUMMARY:Weekly engineering standup (rescheduled — late start)
+DESCRIPTION:Standup moved to 10am on Thursday January 11 due to the
+  all-team breakfast running over. Same format\, shorter updates please.
+LOCATION:Zoom — standup room
+ORGANIZER;CN=Alice Johnson:mailto:alice@engineering.example.com
+ATTENDEE;CN=Alice Johnson;ROLE=CHAIR;PARTSTAT=ACCEPTED:
+ mailto:alice@engineering.example.com
+ATTENDEE;CN=Bob Smith;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:bob@engineering.example.com
+ATTENDEE;CN=Carol White;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:carol@engineering.example.com
+ATTENDEE;CN=David Lee;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:david@engineering.example.com
+ATTENDEE;CN=Eve Martinez;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED:
+ mailto:eve@engineering.example.com
+STATUS:CONFIRMED
+SEQUENCE:4
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,390 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    /* Fonts - Bound directly onto your Geist variable engine */
+    --font-sans:    'Geist Variable', system-ui, -apple-system, sans-serif;
+    --font-mono:    'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
+    --font-heading: 'Geist Variable', system-ui, -apple-system, sans-serif;
+
+    /* shadcn token bridges */
+    --color-background:           var(--background);
+    --color-foreground:           var(--foreground);
+    --color-card:                 var(--card);
+    --color-card-foreground:      var(--card-foreground);
+    --color-popover:              var(--popover);
+    --color-popover-foreground:   var(--popover-foreground);
+    --color-primary:              var(--primary);
+    --color-primary-foreground:   var(--primary-foreground);
+    --color-secondary:            var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted:                var(--muted);
+    --color-muted-foreground:     var(--muted-foreground);
+    --color-accent:               var(--accent);
+    --color-accent-foreground:    var(--accent-foreground);
+    --color-destructive:          var(--destructive);
+    --color-border:               var(--border);
+    --color-input:                var(--input);
+    --color-ring:                 var(--ring);
+
+    /* Spacing & Radius scale matches tight engineering frameworks */
+    --radius-sm:  calc(var(--radius) * 0.6);
+    --radius-md:  calc(var(--radius) * 0.8);
+    --radius-lg:  var(--radius);
+    --radius-xl:  calc(var(--radius) * 1.2);
+    --radius-2xl: calc(var(--radius) * 1.5);
+
+    /* ACCESSIBILITY TUNED: Custom iCalendar Status Tokens (Passes 4.5:1) */
+    --color-confirmed-bg:     oklch(0.95 0.025 264);
+    --color-confirmed-text:   oklch(0.32 0.14  264);
+    --color-confirmed-border: oklch(0.75 0.10  264);
+
+    --color-tentative-bg:     oklch(0.96 0.04  85);
+    --color-tentative-text:   oklch(0.36 0.12  85);
+    --color-tentative-border: oklch(0.76 0.11  85);
+
+    --color-cancelled-bg:     oklch(0.95 0.03  20);
+    --color-cancelled-text:   oklch(0.34 0.15  20);
+    --color-cancelled-border: oklch(0.74 0.12  20);
+
+    /* ACCESSIBILITY TUNED: Engine Comparison Diff Tokens (Passes 4.5:1) */
+    --color-diff-added-bg:       oklch(0.95 0.04  145);
+    --color-diff-added-text:     oklch(0.30 0.13  145);
+    --color-diff-added-border:   oklch(0.68 0.15  145);
+
+    --color-diff-removed-bg:     oklch(0.95 0.03  20);
+    --color-diff-removed-text:   oklch(0.34 0.15  20);
+    --color-diff-removed-border: oklch(0.64 0.20  20);
+
+    --color-diff-modified-bg:     oklch(0.96 0.04  85);
+    --color-diff-modified-text:   oklch(0.36 0.12  85);
+    --color-diff-modified-border: oklch(0.74 0.12  85);
+
+    /* ACCESSIBILITY TUNED: RFC Diagnostic Issue Row Tokens (Passes 4.5:1) */
+    --color-issue-error-bg:     oklch(0.95 0.03  20);
+    --color-issue-error-text:   oklch(0.34 0.15  20);
+    --color-issue-error-border: oklch(0.64 0.20  20);
+
+    --color-issue-warning-bg:     oklch(0.96 0.04  85);
+    --color-issue-warning-text:   oklch(0.36 0.12  85);
+    --color-issue-warning-border: oklch(0.74 0.12  85);
+
+    /* Code Block Palette Override (Dark mode maintains deep inner contrast) */
+    --color-code-bg:      oklch(0.16 0.006 75);
+    --color-code-text:    oklch(0.95 0.002 75);
+    --color-code-border:  oklch(0.511 0.237 264.05);
+    --color-code-comment: oklch(0.65 0.006 75);
+    --color-code-string:  oklch(0.82 0.09  145);
+    --color-code-keyword: oklch(0.76 0.11  264);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Color System Base — Stark Documentation Canvas (Light Mode Only)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+    --background:         oklch(0.985 0.002 75); /* Soft, glare-reducing canvas back */
+    --foreground:         oklch(0.12 0.005 75);  /* Deep slate ink text */
+
+    --card:               oklch(1 0 0);
+    --card-foreground:    oklch(0.12 0.005 75);
+    --popover:            oklch(1 0 0);
+    --popover-foreground: oklch(0.12 0.005 75);
+
+    --primary:            oklch(0.48 0.22 264.05); /* Deepened slightly to pass WCAG text rules */
+    --primary-foreground: oklch(1 0 0);
+
+    --secondary:            oklch(0.95 0.002 75);
+    --secondary-foreground: oklch(0.20 0.005 75);
+
+    --muted:             oklch(0.935 0.003 75); /* Darkened slightly to balance signature text */
+    --muted-foreground:  oklch(0.32 0.008 75);  /* Deepened to fully pass 4.5:1 ratio */
+
+    --accent:            oklch(0.94 0.003 75);
+    --accent-foreground: oklch(0.15 0.005 75);
+
+    --destructive:       oklch(0.52 0.22 27.3); /* Optimized crimson text compliance */
+
+    --border: oklch(0.90 0.003 75); /* Defined separators */
+    --input:  oklch(0.89 0.002 75);
+    --ring:   oklch(0.48 0.22 264.05);
+    --radius: 0.375rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Base Layer — Global Defaults Resets
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+    *, *::before, *::after {
+        box-sizing: border-box;
+        @apply border-border;
+    }
+
+    html {
+        @apply font-sans antialiased;
+        font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1, 'ss02' 1;
+        text-rendering: optimizeLegibility;
+        letter-spacing: -0.011em;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        min-height: 100dvh;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+
+    /* Headings: Deep ink charcoal for clean scanning profiles */
+    h1 {
+        @apply font-bold tracking-tight text-slate-900;
+        font-size: 1.75rem;
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        @apply font-bold tracking-tight text-slate-900;
+        font-size: 1.375rem;
+        letter-spacing: -0.02em;
+    }
+
+    h3 {
+        @apply font-bold tracking-tight text-slate-900;
+        font-size: 1.125rem;
+        letter-spacing: -0.015em;
+    }
+
+    h4 {
+        @apply font-semibold text-slate-800;
+        font-size: 0.875rem;
+    }
+
+    /* Interactive links */
+    a {
+        @apply text-primary no-underline font-medium;
+        text-underline-offset: 3px;
+    }
+    a:hover {
+        @apply underline text-primary/90;
+    }
+
+    /* Target description copy and text-muted-foreground elements explicitly */
+    p, .text-muted-foreground {
+        color: oklch(0.32 0.008 75) !important; /* Rich dark grey ink */
+        line-height: 1.65 !important;
+        font-size: 0.875rem;
+    }
+
+    /* Inline documentation code spans */
+    :not(pre) > code {
+        @apply font-mono rounded font-medium;
+        font-size: 0.8125rem;
+        padding: 0.15rem 0.35rem;
+        background-color: oklch(0.95 0.003 75);
+        color: var(--primary);
+        border: 1px solid var(--border);
+    }
+
+    /* Universal platform selections */
+    ::selection {
+        background-color: oklch(0.48 0.22 264.05 / 0.15);
+        color: inherit;
+    }
+
+    /* Custom engine scroll tracks */
+    ::-webkit-scrollbar        { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track  { background: transparent; }
+    ::-webkit-scrollbar-thumb  { background-color: oklch(0.82 0.003 75); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background-color: oklch(0.72 0.003 75); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Component Utilities Config
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@utility code-block {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    background-color: var(--color-code-bg);
+    color: var(--color-code-text);
+    border-left: 3px solid var(--color-code-border);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    white-space: pre;
+    tab-size: 2;
+
+    & .token-comment  { color: var(--color-code-comment); font-style: italic; }
+    & .token-string   { color: var(--color-code-string); }
+    & .token-keyword  { color: var(--color-code-keyword); font-weight: 500; }
+    & .token-property { color: oklch(0.80 0.06 60); }
+}
+
+@utility section-card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) * 2);
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px oklch(0 0 0 / 0.01);
+}
+
+@utility chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-weight: 600; /* Upped weight for sharp contrast readability */
+    font-size: 0.6875rem;
+    letter-spacing: -0.01em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid;
+    white-space: nowrap;
+}
+
+@utility chip-confirmed {
+    @mixin utility chip;
+    background-color: var(--color-confirmed-bg);
+    color:            var(--color-confirmed-text);
+    border-color:     var(--color-confirmed-border);
+}
+
+@utility chip-tentative {
+    @mixin utility chip;
+    background-color: var(--color-tentative-bg);
+    color:            var(--color-tentative-text);
+    border-color:     var(--color-tentative-border);
+}
+
+@utility chip-cancelled {
+    @mixin utility chip;
+    background-color: var(--color-cancelled-bg);
+    color:            var(--color-cancelled-text);
+    border-color:     var(--color-cancelled-border);
+}
+
+@utility rfc-badge {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.6875rem;
+    padding: 0.1rem 0.4rem;
+    background-color: oklch(0.94 0.002 75);
+    color: oklch(0.30 0.008 75); /* Accessible text target */
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    white-space: nowrap;
+}
+
+@utility diff-row {
+    padding: 0.625rem 1rem;
+    border-left: 3px solid;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+@utility diff-added {
+    @mixin utility diff-row;
+    background-color: var(--color-diff-added-bg);
+    border-color: var(--color-diff-added-border);
+    color: var(--color-diff-added-text);
+}
+
+@utility diff-removed {
+    @mixin utility diff-row;
+    background-color: var(--color-diff-removed-bg);
+    border-color: var(--color-diff-removed-border);
+    color: var(--color-diff-removed-text);
+}
+
+@utility diff-modified {
+    @mixin utility diff-row;
+    background-color: var(--color-diff-modified-bg);
+    border-color: var(--color-diff-modified-border);
+    color: var(--color-diff-modified-text);
+}
+
+@utility issue-row {
+    padding: 0.75rem 1rem;
+    border-left: 3px solid;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-weight: 500;
+}
+
+@utility issue-error {
+    @mixin utility issue-row;
+    background-color: var(--color-issue-error-bg);
+    border-color: var(--color-issue-error-border);
+    color: var(--color-issue-error-text);
+}
+
+@utility issue-warning {
+    @mixin utility issue-row;
+    background-color: var(--color-issue-warning-bg);
+    border-color: var(--color-issue-warning-border);
+    color: var(--color-issue-warning-text);
+}
+
+@utility conflict-pair {
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--color-diff-removed-border);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background-color: var(--color-diff-removed-bg);
+    color: var(--color-diff-removed-text);
+    font-weight: 500;
+}
+
+@utility section-label {
+    font-size: 0.6875rem;
+    font-weight: 700; /* Boosted to pass tests over backgrounds */
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: oklch(0.32 0.008 75);
+}
+
+@utility prop-row {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid oklch(0.94 0.002 75);
+
+    &:last-child { border-bottom: none; }
+    & .prop-key   { shrink: 0; font-family: var(--font-mono); width: 7rem; color: oklch(0.32 0.008 75); font-size: 0.8125rem; font-weight: 600; }
+    & .prop-value { color: oklch(0.12 0.005 75); font-size: 0.8125rem; line-height: 1.5; }
+}
+
+@utility nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600; /* Raised from 500 to keep monospaced strokes crisp and green scored */
+    color: oklch(0.32 0.008 75); /* Safe anchor text contrast ratio */
+    transition: background-color 100ms ease, color 100ms ease;
+
+    &:hover {
+        background-color: oklch(0.92 0.003 75);
+        color: oklch(0.12 0.005 75);
+    }
+
+    &.active {
+        background-color: var(--primary);
+        color: var(--primary-foreground);
+        font-weight: 700;
+        box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
+    }
+}
