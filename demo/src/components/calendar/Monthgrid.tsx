@@ -9,7 +9,6 @@ type MonthGridProps = {
   selectedDay: Temporal.PlainDate | null
   eventsByDay: EventsByDay
   hasEventsInMonth: boolean
-  onResetToFixture: () => void
   onDaySelect: (day: Temporal.PlainDate) => void
   onPrevMonth: () => void
   onNextMonth: () => void
@@ -75,6 +74,7 @@ export default function MonthGrid({
                                   }: MonthGridProps) {
   const today = Temporal.Now.plainDateISO()
   const days  = buildCalendarDays(month)
+  const todayInView = today.year === month.year && today.month === month.month
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -82,34 +82,18 @@ export default function MonthGrid({
       {/* ── Controls ── */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
-          <button
-            onClick={onPrevMonth}
-            aria-label="Previous month"
-            className="p-1.5 rounded-md text-muted-foreground
-                       hover:bg-accent hover:text-foreground transition-colors"
-          >
-            ←
-          </button>
-          <span className="text-sm font-semibold text-foreground px-2 min-w-[10rem] text-center">
+          <button onClick={onPrevMonth} aria-label="Previous month" className="p-1.5 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">←</button>
+          <span className="text-sm font-semibold text-foreground px-2 min-w-40 text-center">
             {formatMonthYear(month)}
           </span>
-          <button
-            onClick={onNextMonth}
-            aria-label="Next month"
-            className="p-1.5 rounded-md text-muted-foreground
-                       hover:bg-accent hover:text-foreground transition-colors"
-          >
-            →
-          </button>
+          <button onClick={onNextMonth} aria-label="Next month" className="p-1.5 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">→</button>
         </div>
 
         <button
           onClick={onToday}
-          className="text-xs font-medium px-3 py-1.5 rounded-md border border-border
-                     text-muted-foreground hover:bg-accent hover:text-foreground
-                     transition-colors"
+          className="text-xs font-medium px-3 py-1.5 rounded-md border border-border text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
         >
-          Today
+          {todayInView ? 'Today' : "Jump to today"}
         </button>
       </div>
 
