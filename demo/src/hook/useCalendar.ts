@@ -3,7 +3,7 @@ import { Temporal } from 'temporal-polyfill'
 import { parse, query, validate } from 'ics-suite'
 import type { ExpandedEvent, ValidationResult } from 'ics-suite'
 
-import googleCalendar from '../fixtures/invalid-calendar.ics?raw'
+import googleCalendar from '../fixtures/recurring-series.ics?raw'
 
 // ─── types ───────────────────────────────────────────────────────────────────
 
@@ -287,7 +287,10 @@ export function useCalendar(icsText?: string) {
     setSelectedEvent(null)
   }
 
+  const recurringEvent = calendar.events.find(e => e.rrule)
+
   return {
+    recurringEvent,
     month,
     selectedDay,
     selectedEvent,

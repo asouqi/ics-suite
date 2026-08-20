@@ -5,6 +5,7 @@ import DayPanel from "@/components/calendar/DayPanel.tsx"
 import FilterBar from "@/components/calendar/FilterBar.tsx"
 import ConflictsBar from "@/components/calendar/ConflictsBar.tsx"
 import ValidationBar from "@/components/calendar/ValidationBar.tsx"
+import RecurringEvents from "@/components/calendar/RecurringEvents.tsx"
 
 // Mock definitions matching your library structures
 interface Fixture {
@@ -188,7 +189,8 @@ export default function LibraryPlayground() {
         <ConflictsBar conflicts={cal.conflicts} />
         {/* Validation bar */}
         <ValidationBar validation={cal.validation} />
-
+        {/* Recurring events — expandEvent() in action */}
+        {cal.recurringEvent && <RecurringEvents event={cal.recurringEvent} month={cal.month} />}
       </div>
     </div>
   );
